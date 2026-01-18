@@ -19,7 +19,9 @@ export default function ItemsPage() {
     const fetchItems = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/items`);
+        const response = await fetch(
+          `https://shop-hub-api.vercel.app/api/items`
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch items");
@@ -28,7 +30,12 @@ export default function ItemsPage() {
         const data: ApiResponse<Item[]> = await response.json();
 
         if (data.success && data.data) {
-          setItems(data.data);
+          // Transform the data to ensure proper ID format
+          const transformedItems = data.data.map((item) => ({
+            ...item,
+            id: item.id || item._id || item.id,
+          }));
+          setItems(transformedItems);
         } else {
           throw new Error(data.message || "Failed to load items");
         }

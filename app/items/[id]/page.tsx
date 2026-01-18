@@ -22,7 +22,9 @@ export default function ItemDetailPage() {
     const fetchItem = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/items/${itemId}`);
+        const response = await fetch(
+          `https://shop-hub-api.vercel.app/api/items/${itemId}`
+        );
 
         if (!response.ok) {
           if (response.status === 404) {
@@ -35,7 +37,12 @@ export default function ItemDetailPage() {
         const data: ApiResponse<Item> = await response.json();
 
         if (data.success && data.data) {
-          setItem(data.data);
+          // Transform the data to ensure proper ID format
+          const transformedItem = {
+            ...data.data,
+            id: data.data.id || data.data._id || data.data.id,
+          };
+          setItem(transformedItem);
         } else {
           throw new Error(data.message || "Item not found");
         }
