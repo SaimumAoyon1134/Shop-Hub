@@ -25,7 +25,6 @@ async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0, // and MongoDB driver buffering
       dbName: "ShopHub",
     };
 

@@ -1,12 +1,25 @@
-import Item from "../../../../api-server/models/Item";
-import connectDB from "../../../../api-server/config/db";
+import Item from "../../../api-server/models/Item";
+import connectDB from "../../../api-server/config/db";
+import seedItems from "../../../api-server/utils/seedItems";
 
 // Ensure DB connection
 connectDB();
 
+// Seed database on first request
+let isSeeded = false;
+const ensureSeeded = async () => {
+  if (!isSeeded) {
+    await seedItems();
+    isSeeded = true;
+  }
+};
+
 // GET all items
 export async function GET(request) {
   try {
+    // Ensure database is seeded
+    await ensureSeeded();
+
     const items = await Item.find({});
     return Response.json({
       success: true,

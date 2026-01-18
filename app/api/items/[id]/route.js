@@ -1,5 +1,5 @@
-import Item from "../../../../../api-server/models/Item";
-import connectDB from "../../../../../api-server/config/db";
+import Item from "../../../../api-server/models/Item";
+import connectDB from "../../../../api-server/config/db";
 
 // Ensure DB connection
 connectDB();
