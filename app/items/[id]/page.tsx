@@ -23,7 +23,9 @@ export default function ItemDetailPage() {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3001/api/items/${itemId}`
+          `${
+            process.env.API_BASE_URL || "http://localhost:3001"
+          }/api/items/${itemId}`
         );
 
         if (!response.ok) {

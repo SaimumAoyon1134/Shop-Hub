@@ -59,21 +59,24 @@ export default function AddItemPage() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/api/items", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          description: formData.description.trim(),
-          price: parseFloat(formData.price),
-          image:
-            formData.image.trim() ||
-            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
-          category: formData.category,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.API_BASE_URL || "http://localhost:3001"}/api/items`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            description: formData.description.trim(),
+            price: parseFloat(formData.price),
+            image:
+              formData.image.trim() ||
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+            category: formData.category,
+          }),
+        }
+      );
 
       const data = await response.json();
 
