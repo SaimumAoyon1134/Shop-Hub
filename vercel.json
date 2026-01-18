@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "name": "shop-hub-api",
+  "builds": [
+    {
+      "src": "api-server/server.vercel.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api-server/server.vercel.js"
+    }
+  ]
+}

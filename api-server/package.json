@@ -1,0 +1,17 @@
+{
+  "name": "shop-hub-api",
+  "version": "1.0.0",
+  "main": "server.vercel.js",
+  "scripts": {
+    "start": "node server.vercel.js",
+    "dev": "node server.vercel.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "mongoose": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

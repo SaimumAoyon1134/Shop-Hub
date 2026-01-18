@@ -30,3 +30,11 @@ app.get("/api/health", (req, res) => {
 
 // Export the handler for Vercel
 module.exports = app;
+
+// Only listen on a port if running directly (not on Vercel)
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`API Server running on port ${PORT}`);
+  });
+}
