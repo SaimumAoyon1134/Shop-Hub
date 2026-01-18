@@ -1,6 +1,6 @@
-import Item from "../../../api-server/models/Item";
+import Item from "../../models/Item";
 import connectDB from "../../../api-server/config/db";
-import seedItems from "../../../api-server/utils/seedItems";
+import seedItems from "../../utils/seedItems";
 
 // Global variable to track connection status
 if (!global.dbConnected) {
@@ -22,16 +22,27 @@ const ensureSeeded = async () => {
 // GET all items
 export async function GET(request) {
   try {
+    console.log("GET /api/items: Starting request");
+
     // Ensure database is seeded
     await ensureSeeded();
 
+    console.log("GET /api/items: Seeding completed");
+
     const items = await Item.find({});
+    console.log("GET /api/items: Found", items.length, "items");
+    console.log(
+      "GET /api/items: Sample item IDs:",
+      items.slice(0, 2).map((item) => ({ id: item.id, _id: item._id }))
+    );
+
     return Response.json({
       success: true,
       data: items,
       count: items.length,
     });
   } catch (error) {
+    console.error("GET /api/items: Error:", error);
     return Response.json(
       { success: false, message: "Error fetching items", error: error.message },
       { status: 500 }

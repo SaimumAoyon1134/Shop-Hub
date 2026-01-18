@@ -1,5 +1,6 @@
-import Item from "../../../../api-server/models/Item";
+import Item from "../../../models/Item";
 import connectDB from "../../../../api-server/config/db";
+import { Types } from "mongoose";
 
 // Global variable to track connection status
 if (!global.dbConnected) {
@@ -24,13 +25,49 @@ function getIdFromUrl(url) {
 // GET item by ID
 export async function GET(request, { params }) {
   try {
+    console.log("GET /api/items/[id]: Starting request for ID:", params.id);
+
     // Ensure DB connection
     await ensureConnection();
 
     const { id } = params;
-    const item = await Item.findById(id);
+    console.log("GET /api/items/[id]: Looking for item with ID:", id);
+
+    console.log("GET /api/items/[id]: Validating ID format:", id);
+
+    // Attempt to find item regardless of ObjectId validity
+    // Some items might have different ID formats
+    let item;
+    try {
+      // First, try with the original id
+      item = await Item.findById(id);
+
+      // If not found and id is not a valid ObjectId, it might be from initial data
+      if (!item && !Types.ObjectId.isValid(id)) {
+        console.log(
+          "GET /api/items/[id]: ID is not valid ObjectId, checking for other formats"
+        );
+        // If it's not a valid ObjectId, try finding by other fields
+        // This handles cases where initial seed data might have different ID formats
+        item = await Item.findOne({ id: id });
+      }
+    } catch (error) {
+      console.error("GET /api/items/[id]: Error finding item:", error);
+      return Response.json(
+        {
+          success: false,
+          message: "Error fetching item",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    console.log("GET /api/items/[id]: Found item after search:", !!item);
+    console.log("GET /api/items/[id]: Found item:", !!item);
 
     if (!item) {
+      console.log("GET /api/items/[id]: Item not found for ID:", id);
       return Response.json(
         { success: false, message: "Item not found" },
         { status: 404 }
@@ -42,6 +79,7 @@ export async function GET(request, { params }) {
       data: item,
     });
   } catch (error) {
+    console.error("GET /api/items/[id]: Error:", error);
     return Response.json(
       { success: false, message: "Error fetching item", error: error.message },
       { status: 500 }

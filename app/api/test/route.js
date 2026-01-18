@@ -1,7 +1,7 @@
 export async function GET(request) {
   return Response.json({
     status: "OK",
-    message: "API Server is running",
+    message: "Test API is working",
     timestamp: new Date().toISOString(),
   });
 }

@@ -6,11 +6,8 @@ const seedItems = require("./utils/seedItems");
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
-// Seed items if database is empty
-seedItems();
+// Note: DB connection is handled in each controller function
+// for serverless compatibility
 
 // Middleware
 app.use(

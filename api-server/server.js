@@ -25,7 +25,11 @@ app.use("/api/items", itemRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", message: "API Server is running" });
+  res.json({
+    status: "OK",
+    message: "API Server is running",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // Export the handler for Vercel

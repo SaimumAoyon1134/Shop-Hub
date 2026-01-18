@@ -1,8 +1,40 @@
 const Item = require("../models/Item");
+const connectDB = require("../config/db");
+const seedItems = require("../utils/seedItems");
+
+// Global variable to track connection status
+if (!global.dbConnected) {
+  global.dbConnected = false;
+}
+
+// Track if seeding has been performed
+if (!global.itemsSeeded) {
+  global.itemsSeeded = false;
+}
+
+// Function to ensure DB connection is ready
+const ensureConnection = async () => {
+  if (!global.dbConnected) {
+    await connectDB();
+    global.dbConnected = true;
+  }
+};
+
+// Function to ensure items are seeded
+const ensureSeeded = async () => {
+  if (!global.itemsSeeded) {
+    await ensureConnection();
+    await seedItems();
+    global.itemsSeeded = true;
+  }
+};
 
 // Get all items
 const getAllItems = async (req, res) => {
   try {
+    // Ensure DB connection is ready and items are seeded
+    await ensureSeeded();
+
     const items = await Item.find({});
     res.json({
       success: true,
@@ -21,6 +53,9 @@ const getAllItems = async (req, res) => {
 // Get item by ID
 const getItemById = async (req, res) => {
   try {
+    // Ensure DB connection is ready
+    await ensureConnection();
+
     const { id } = req.params;
     const item = await Item.findById(id);
 
@@ -47,6 +82,9 @@ const getItemById = async (req, res) => {
 // Add new item
 const addItem = async (req, res) => {
   try {
+    // Ensure DB connection is ready
+    await ensureConnection();
+
     const { name, description, price, image, category } = req.body;
 
     // Validation
@@ -84,6 +122,9 @@ const addItem = async (req, res) => {
 // Update item
 const updateItem = async (req, res) => {
   try {
+    // Ensure DB connection is ready
+    await ensureConnection();
+
     const { id } = req.params;
     const updateData = req.body;
 
@@ -116,6 +157,9 @@ const updateItem = async (req, res) => {
 // Delete item
 const deleteItem = async (req, res) => {
   try {
+    // Ensure DB connection is ready
+    await ensureConnection();
+
     const { id } = req.params;
     const deletedItem = await Item.findByIdAndDelete(id);
 
