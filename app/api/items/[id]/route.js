@@ -1,8 +1,18 @@
 import Item from "../../../../api-server/models/Item";
 import connectDB from "../../../../api-server/config/db";
 
-// Ensure DB connection
-connectDB();
+// Global variable to track connection status
+if (!global.dbConnected) {
+  global.dbConnected = false;
+}
+
+// Ensure DB is connected before using
+const ensureConnection = async () => {
+  if (!global.dbConnected) {
+    await connectDB();
+    global.dbConnected = true;
+  }
+};
 
 // Helper function to extract ID from URL
 function getIdFromUrl(url) {
@@ -14,6 +24,9 @@ function getIdFromUrl(url) {
 // GET item by ID
 export async function GET(request, { params }) {
   try {
+    // Ensure DB connection
+    await ensureConnection();
+
     const { id } = params;
     const item = await Item.findById(id);
 
@@ -39,6 +52,9 @@ export async function GET(request, { params }) {
 // PUT update item
 export async function PUT(request, { params }) {
   try {
+    // Ensure DB connection
+    await ensureConnection();
+
     const { id } = params;
     const updateData = await request.json();
 
@@ -70,6 +86,9 @@ export async function PUT(request, { params }) {
 // DELETE item
 export async function DELETE(request, { params }) {
   try {
+    // Ensure DB connection
+    await ensureConnection();
+
     const { id } = params;
     const deletedItem = await Item.findByIdAndDelete(id);
 

@@ -2,13 +2,18 @@ import Item from "../../../api-server/models/Item";
 import connectDB from "../../../api-server/config/db";
 import seedItems from "../../../api-server/utils/seedItems";
 
-// Ensure DB connection
-connectDB();
+// Global variable to track connection status
+if (!global.dbConnected) {
+  global.dbConnected = false;
+}
 
 // Seed database on first request
 let isSeeded = false;
 const ensureSeeded = async () => {
   if (!isSeeded) {
+    // Ensure DB is connected before seeding
+    await connectDB();
+    global.dbConnected = true;
     await seedItems();
     isSeeded = true;
   }
