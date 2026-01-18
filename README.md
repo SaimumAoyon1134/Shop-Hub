@@ -1,36 +1,217 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShopHub - Next.js E-commerce Application
 
-## Getting Started
+A modern e-commerce application built with Next.js 16, featuring a complete shopping experience with authentication, product listings, and admin functionality.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Core Features
+
+- **Landing Page**: Beautiful 7-section homepage with hero, features, testimonials, and more
+- **Authentication System**: Mock login with cookie-based session management
+- **Product Catalog**: Browse and search through products with filtering
+- **Product Details**: Detailed product pages with images and specifications
+- **Protected Admin Area**: Add new products functionality (requires login)
+- **Responsive Design**: Fully responsive UI that works on all devices
+- **Dark Theme**: Modern dark-themed interface with glassmorphism effects
+- **Toast Notifications**: User feedback system for actions and errors
+
+### Technical Features
+
+- Client-side authentication with cookie storage
+- RESTful API integration with Express.js backend
+- Dynamic routing for product details
+- Form validation and error handling
+- Loading states and skeleton screens
+- SEO-friendly structure
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+- **Next.js 16** - React framework with App Router
+- **React 19** - Latest React version
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling framework
+- **React Hot Toast** - Notification system
+- **Client-side Context API** - State management
+
+### Backend
+
+- **Express.js** - API server
+- **Node.js** - Runtime environment
+- **RESTful API** - Standard API architecture
+- **Mock Data** - In-memory data storage
+
+## 📁 Project Structure
+
+```
+my-app/
+├── app/                    # Next.js app directory
+│   ├── components/         # Reusable components
+│   │   ├── Navbar.tsx
+│   │   └── Footer.tsx
+│   ├── context/           # React context providers
+│   │   └── AuthContext.tsx
+│   ├── lib/               # Utility functions
+│   │   └── auth.ts
+│   ├── login/             # Login page
+│   │   └── page.tsx
+│   ├── items/             # Items listing and details
+│   │   ├── page.tsx
+│   │   └── [id]/
+│   │       └── page.tsx
+│   ├── add-item/          # Add item form (protected)
+│   │   └── page.tsx
+│   ├── types/             # TypeScript types
+│   │   └── index.ts
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── api-server/            # Express.js API server
+│   ├── controllers/
+│   │   └── itemController.js
+│   ├── models/
+│   │   └── itemModel.js
+│   ├── routes/
+│   │   └── items.js
+│   └── server.js
+├── public/
+└── package.json
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18+ installed
+- npm or yarn package manager
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   git clone <repository-url>
+   cd my-app
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies**
 
-## Deploy on Vercel
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. **Start the development servers**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   Open two terminal windows:
+
+   **Terminal 1 - Start Next.js frontend:**
+
+   ```bash
+   npm run dev
+   ```
+
+   **Terminal 2 - Start Express.js API server:**
+
+   ```bash
+   node api-server/server.js
+   ```
+
+4. **Access the application**
+   - Frontend: [http://localhost:3000](http://localhost:3000)
+   - API Server: [http://localhost:3001](http://localhost:3001)
+
+## 🔐 Authentication
+
+### Demo Credentials
+
+- **Email**: `user@example.com`
+- **Password**: `password123`
+
+The authentication system uses mock credentials stored in the auth utility. In a production environment, this would integrate with a proper authentication service.
+
+## 🌐 Available Routes
+
+| Route         | Description                  | Authentication Required |
+| ------------- | ---------------------------- | ----------------------- |
+| `/`           | Landing page with 7 sections | No                      |
+| `/login`      | User login page              | No                      |
+| `/items`      | Browse all products          | No                      |
+| `/items/[id]` | Product details page         | No                      |
+| `/add-item`   | Add new product form         | Yes                     |
+
+## 🎯 API Endpoints
+
+The Express.js server runs on port 3001 and provides the following endpoints:
+
+### Items API
+
+- `GET /api/items` - Get all items
+- `GET /api/items/:id` - Get item by ID
+- `POST /api/items` - Add new item
+- `PUT /api/items/:id` - Update item
+- `DELETE /api/items/:id` - Delete item
+- `GET /api/health` - Health check
+
+## 🎨 UI/UX Features
+
+Based on user preferences, the application includes:
+
+- **Dark Theme**: Default dark interface with blue accents
+- **Hover Effects**: Enhanced hover states with blue shadows
+- **Focus States**: Neon glow effects with glassy prism styling
+- **Smooth Animations**: All transitions are smooth and polished
+- **Responsive Design**: Works perfectly on mobile, tablet, and desktop
+
+## 🧪 Testing the Application
+
+1. **Browse Products**: Visit `/items` to see the product catalog
+2. **View Product Details**: Click on any product to see detailed information
+3. **Try Authentication**: Use the demo credentials to log in
+4. **Add Products**: Navigate to `/add-item` (requires login) to add new products
+5. **Search & Filter**: Use the search bar and category filters on the items page
+
+## 📱 Responsive Features
+
+The application is fully responsive and includes:
+
+- Mobile-first design approach
+- Touch-friendly navigation
+- Adaptive layouts for all screen sizes
+- Optimized images and loading states
+
+## 🚀 Deployment
+
+### Frontend Deployment
+
+The Next.js application can be deployed to:
+
+- Vercel (recommended)
+- Netlify
+- AWS Amplify
+- Custom Node.js hosting
+
+### Backend Deployment
+
+The Express.js API can be deployed to:
+
+- Heroku
+- AWS EC2
+- DigitalOcean
+- Custom VPS
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- Tailwind CSS for the styling utility
+- Unsplash for placeholder images
+- All the open-source contributors who made this possible
+# Shop-Hub
