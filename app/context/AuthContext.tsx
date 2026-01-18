@@ -8,7 +8,6 @@ import React, {
   ReactNode,
 } from "react";
 import { isAuthenticated, getCurrentUser, removeAuthCookie } from "../lib/auth";
-import { getCurrentFirebaseUser, firebaseSignOut } from "../lib/firebase/auth";
 
 interface User {
   id?: number;
@@ -52,10 +51,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
-    try {
-      await firebaseSignOut();
-    } catch (error) {
-      console.error("Error signing out from Firebase:", error);
+    // Only call Firebase sign out if we're in the browser
+    if (typeof window !== "undefined") {
+      try {
+        const { firebaseSignOut } = await import("../lib/firebase/auth");
+        await firebaseSignOut();
+      } catch (error) {
+        console.error("Error signing out from Firebase:", error);
+      }
     }
     setUser(null);
     removeAuthCookie();

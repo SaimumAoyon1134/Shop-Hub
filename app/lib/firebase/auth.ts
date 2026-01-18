@@ -6,13 +6,25 @@ import {
   sendPasswordResetEmail,
   User,
   updateProfile,
+  Auth,
 } from "firebase/auth";
 import { auth, googleProvider } from "./config";
 import { setAuthCookie, removeAuthCookie } from "../auth";
 
+// Helper function to ensure Firebase is initialized
+const ensureFirebaseInitialized = (): { auth: Auth } => {
+  if (!auth || typeof window === "undefined") {
+    throw new Error(
+      "Firebase is not initialized. Make sure you are on the client-side."
+    );
+  }
+  return { auth };
+};
+
 // Firebase authentication functions
 export const firebaseSignIn = async (email: string, password: string) => {
   try {
+    const { auth } = ensureFirebaseInitialized();
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -50,6 +62,7 @@ export const firebaseSignUp = async (
   displayName?: string
 ) => {
   try {
+    const { auth } = ensureFirebaseInitialized();
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -88,7 +101,8 @@ export const firebaseSignUp = async (
 
 export const firebaseSignInWithGoogle = async () => {
   try {
-    const userCredential = await signInWithPopup(auth, googleProvider);
+    const { auth } = ensureFirebaseInitialized();
+    const userCredential = await signInWithPopup(auth, googleProvider!);
     const user = userCredential.user;
 
     // Create a token-like string for our cookie
@@ -117,6 +131,7 @@ export const firebaseSignInWithGoogle = async () => {
 
 export const firebaseSignOut = async () => {
   try {
+    const { auth } = ensureFirebaseInitialized();
     await signOut(auth);
     removeAuthCookie();
     return { success: true };
@@ -131,6 +146,7 @@ export const firebaseSignOut = async () => {
 
 export const sendPasswordReset = async (email: string) => {
   try {
+    const { auth } = ensureFirebaseInitialized();
     await sendPasswordResetEmail(auth, email);
     return { success: true, message: "Password reset email sent!" };
   } catch (error: any) {
@@ -143,6 +159,9 @@ export const sendPasswordReset = async (email: string) => {
 };
 
 export const getCurrentFirebaseUser = () => {
+  if (typeof window === "undefined" || !auth) {
+    return null;
+  }
   const user = auth.currentUser;
   return user
     ? {

@@ -19,9 +19,7 @@ export default function ItemsPage() {
     const fetchItems = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `${process.env.API_BASE_URL || "http://localhost:3001"}/api/items`
-        );
+        const response = await fetch(`/api/items`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch items");

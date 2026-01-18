@@ -22,11 +22,7 @@ export default function ItemDetailPage() {
     const fetchItem = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `${
-            process.env.API_BASE_URL || "http://localhost:3001"
-          }/api/items/${itemId}`
-        );
+        const response = await fetch(`/api/items/${itemId}`);
 
         if (!response.ok) {
           if (response.status === 404) {

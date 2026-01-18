@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
-import { firebaseSignUp } from "../lib/firebase/auth";
 import { toast } from "react-hot-toast";
 import { setAuthCookie } from "../lib/auth";
 import Navbar from "../components/Navbar";
@@ -35,6 +34,9 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
+      // Dynamically import Firebase functions to avoid SSR issues
+      const { firebaseSignUp } = await import("../lib/firebase/auth");
+
       const result = await firebaseSignUp(email, password, displayName);
 
       if (result.success && result.token && result.user) {

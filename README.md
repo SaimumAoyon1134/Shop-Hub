@@ -182,23 +182,39 @@ The application is fully responsive and includes:
 
 ## 🚀 Deployment
 
-### Frontend Deployment
+### Full-Stack Deployment (Recommended)
 
-The Next.js application can be deployed to:
+The application is designed for deployment to Vercel with both frontend and backend in a single deployment:
 
-- Vercel (recommended)
-- Netlify
-- AWS Amplify
-- Custom Node.js hosting
+1. Push your code to a Git repository
+2. Connect your repository to [Vercel](https://vercel.com)
+3. Add environment variables in the Vercel dashboard
+4. Deploy!
 
-### Backend Deployment
+The Next.js API routes will handle all backend functionality, eliminating the need for a separate backend server in production.
 
-The Express.js API can be deployed to:
+### Environment Variables
 
-- Heroku
-- AWS EC2
-- DigitalOcean
-- Custom VPS
+Required environment variables for deployment:
+
+```
+MONGODB_URI=your_mongodb_connection_string
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id
+```
+
+### Local Development
+
+For local development, the application still supports the dual-server setup:
+
+- Frontend: Next.js server running on port 3000
+- Backend: Express.js server running on port 3001
+
+In production on Vercel, all API requests will be handled by Next.js API routes instead of the Express server.
 
 ## 🤝 Contributing
 
@@ -214,4 +230,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Tailwind CSS for the styling utility
 - Unsplash for placeholder images
 - All the open-source contributors who made this possible
+
 # Shop-Hub

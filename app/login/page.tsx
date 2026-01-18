@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { authenticateUser, setAuthCookie } from "../lib/auth";
-import { firebaseSignIn, firebaseSignInWithGoogle } from "../lib/firebase/auth";
 import { toast } from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
@@ -22,6 +21,9 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
+      // Dynamically import Firebase functions to avoid SSR issues
+      const { firebaseSignIn } = await import("../lib/firebase/auth");
+
       // First try Firebase authentication
       const result = await firebaseSignIn(email, password);
 
@@ -53,6 +55,9 @@ export default function LoginPage() {
   const handleGoogleSignIn = async () => {
     setIsGoogleLoading(true);
     try {
+      // Dynamically import Firebase functions to avoid SSR issues
+      const { firebaseSignInWithGoogle } = await import("../lib/firebase/auth");
+
       const result = await firebaseSignInWithGoogle();
 
       if (result.success && result.token && result.user) {
